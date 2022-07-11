@@ -70,7 +70,15 @@ class Network (private val context: Context) {
         httpURLConnection.responseCode
         httpURLConnection.responseMessage
 
-        return parseStringResponse(stringResult)
+        return try {
+            parseStringResponse(stringResult)
+        }catch (ex: Exception){
+            ex.printStackTrace()
+            BookResponse(emptyList())
+        }finally {
+            httpURLConnection.disconnect()
+        }
+
     }
 
     private fun parseInputStream (inputStream: InputStream): String{
